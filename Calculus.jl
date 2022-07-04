@@ -106,7 +106,7 @@ function fastAD(start,finish,step)
     a  = convert(Float64,start)
     b  = convert(Float64,finish)
     dx = convert(Float64,step)
-    return(a,b,dx)
+    return(fastADhelp(a,b,dx))
 end
 
 function fastADhelp(start::Float64,finish::Float64,step::Float64)
