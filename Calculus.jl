@@ -20,6 +20,7 @@ function trapIntegral(start,finish,step)
 end
 
 
+
 # midPoint integral calculator
 function midPntIntegral(start,finish,step)
     if start == finish
@@ -41,6 +42,7 @@ function midPntIntegral(start,finish,step)
 end
 
 
+
 # derivative plotter
 function plotDeriv(start,finish,step)
     if abs(start - finish) < step
@@ -60,8 +62,9 @@ function plotDeriv(start,finish,step)
 end
 
 
+
 # calculate area using simpson's rule
-function simpsRuleInt(start,finish,n)
+function simpsRuleInt(start,finish,n) :: Float64
     if isodd(n)
         simpsRuleInt(start,finish,n+1)
     elseif n < 0
@@ -77,7 +80,51 @@ function simpsRuleInt(start,finish,n)
             simp = simp + 2*f(x)
         end
         area = (dx/3)*( f(start) + simp + 4*f(finish-dx) + f(finish) )
-        println("The area is")
         return(area)
+    end
+end
+
+
+
+#Slow antiderivative plotter but more accurate using simpsons rule
+function slowAntidev(start,finish,step)
+    xs    = start:step:finish
+    intFs = []
+    for x in xs
+        ad = simpsRuleInt(0,x,16)
+        append!(intFs,ad)
+    end
+    pyplot()
+    plot(xs, intFs, title = "antiderivative of f", markercolor = "Blue")
+end
+
+
+
+#Faster antiderivative using trap method
+#Only works for integer steps? fastAD(-4,4,0.1) ==>> InexactError: Int64(-3.9)
+function fastAD(start,finish,step)
+    if abs(step) > abs(finish - start)
+        println("Choose smaller step")
+    elseif finish < start
+        return(fastAD(finish,start,step))
+    else
+        xs    = [start]
+        init  = simpsRuleInt(0,start,16)
+        intFs = [init]
+
+        cumm  = init
+        prevf = f(start)
+        x = start + step
+
+        while x <= finish
+            append!(xs,x)
+            feval = f(x)
+            cumm = cumm + (feval + prevf)*0.5*step
+            append!(intFs,cumm)
+            x = x + step
+        end
+
+        pyplot()
+        plot(xs, intFs, title = "antiderivative of f", markercolor = "Blue")
     end
 end
