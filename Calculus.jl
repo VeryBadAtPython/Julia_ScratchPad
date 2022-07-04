@@ -2,7 +2,7 @@ using Plots
 
 f(x) = x^2 + 2*x + 1
 
-
+# trapezoid rule integral calculatior
 function trapIntegral(start,finish,step)
     if start == finish
         println("The area is")
@@ -20,6 +20,7 @@ function trapIntegral(start,finish,step)
 end
 
 
+# midPoint integral calculator
 function midPntIntegral(start,finish,step)
     if start == finish
         println("The area is")
@@ -40,6 +41,7 @@ function midPntIntegral(start,finish,step)
 end
 
 
+# derivative plotter
 function plotDeriv(start,finish,step)
     if abs(start - finish) < step
         println("Choose smaller step")
@@ -54,5 +56,28 @@ function plotDeriv(start,finish,step)
         end
         pyplot()
         plot(xs, dfs, title = "df/dx", markercolor = "Red")
+    end
+end
+
+
+# calculate area using simpson's rule
+function simpsRuleInt(start,finish,n)
+    if isodd(n)
+        simpsRuleInt(start,finish,n+1)
+    elseif n < 0
+        simpsRuleInt(start,finish,abs(n))
+    else
+        dx = (finish-start)/n
+        x = start
+        simp = 0
+        for i in 1:2:(n-2)
+            x = x + dx
+            simp = simp + 4*f(x)
+            x = x + dx
+            simp = simp + 2*f(x)
+        end
+        area = (dx/3)*( f(start) + simp + 4*f(finish-dx) + f(finish) )
+        println("The area is")
+        return(area)
     end
 end
