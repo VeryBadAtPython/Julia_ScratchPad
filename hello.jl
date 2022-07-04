@@ -17,8 +17,5 @@ end
 function producePlot(n)
     A = series(n)
     pyplot()
-    plot(A[:,1], A[:,2],
-        seriestype = :scatter,
-        title = "Your series",
-        markercolor = "Red")
+    plot(A[:,1], A[:,2], seriestype = :scatter, title = "Your series", markercolor = "Red")
 end
