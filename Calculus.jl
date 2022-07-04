@@ -101,12 +101,19 @@ end
 
 
 #Faster antiderivative using trap method
-#Only works for integer steps? fastAD(-4,4,0.1) ==>> InexactError: Int64(-3.9)
+#Seems quite innacurate
 function fastAD(start,finish,step)
+    a  = convert(Float64,start)
+    b  = convert(Float64,finish)
+    dx = convert(Float64,step)
+    return(a,b,dx)
+end
+
+function fastADhelp(start::Float64,finish::Float64,step::Float64)
     if abs(step) > abs(finish - start)
         println("Choose smaller step")
     elseif finish < start
-        return(fastAD(finish,start,step))
+        return(fastADhelp(finish,start,step))
     else
         xs    = [start]
         init  = simpsRuleInt(0,start,16)
@@ -114,7 +121,7 @@ function fastAD(start,finish,step)
 
         cumm  = init
         prevf = f(start)
-        x = start + step
+        x = start + step :: Float64
 
         while x <= finish
             append!(xs,x)
