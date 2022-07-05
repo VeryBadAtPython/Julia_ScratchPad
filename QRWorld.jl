@@ -83,7 +83,7 @@ function decideEvolve(row,col,grid)
     cell = getVal(row,col,grid)
     hood = countAlive(row,col,grid)
 
-    if cell <= 0
+    if cell >= 1
         if (hood < 2) || (hood == 4)
             return(0)
         else
