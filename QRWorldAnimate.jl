@@ -1,4 +1,4 @@
-using GLMakie
+using Plots
 using Random
 
 # =======================
@@ -124,15 +124,27 @@ end
 # ==== Render Grid   ====
 # =======================
 function render(cells)
-    data  = transpose(cells)
-    (m,n) = size(data)
-
-    f = Figure()
-
-    Axis(f[1,1]).aspect = AxisAspect(m/n)  #Renders in equal aspect
-    heatmap!(data) 
-
+    f=heatmap(cells)
     return(f)
 end
 
 # Sample function call ==>> render(evolveNTimes(100,initial1130()))
+
+function evolveNArray(t,grid)
+    (m,n) = size(grid)
+    array = zeros(m,n,t+1)
+    array[:,:,1] = grid
+    for i in 1:1:t
+        array[:,:,i+1] = evolve(array[:,:,i])
+    end
+    return(array)
+end
+
+
+function makeGif(n,grid)
+    x = evolveNArray(n,grid)
+
+    @gif for t ∈ 1:(n+1)
+        heatmap(x[:,:,t], clims=(0, 2), color=cgrad(:PiYG_4, rev=true))
+    end
+end
