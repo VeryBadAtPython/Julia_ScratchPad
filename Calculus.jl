@@ -1,4 +1,5 @@
 using Plots
+using Random
 
 f(x) = x^2 + 2*x + 1
 
@@ -134,4 +135,33 @@ function fastADhelp(start::Float64,finish::Float64,step::Float64)
         pyplot()
         plot(xs, intFs, title = "antiderivative of f", markercolor = "Blue")
     end
+end
+
+
+#Monte Carlo Integration calculator
+#Uses rough bounds from a sample of 100 points
+#Only for positive valued functions
+function monteCarloPos(start, finish, points::Int)
+    dx     = abs(finish - start)/10000
+    xs     = start:dx:finish
+    fs     = map((x) -> f(x), xs)
+
+    maxB   = maximum(fs)
+    bound = (finish - start)*(maxB)
+
+    below::Int = 0
+    ys         = 0:dx:maxB
+    i::Int     = 1
+
+    while i <= points
+        i = i+1
+        x = rand(xs)
+        y = rand(ys)
+        if y <= f(x)
+            below = below + 1
+        end
+    end
+
+    eval = (below/points)*bound
+    return(eval)
 end
