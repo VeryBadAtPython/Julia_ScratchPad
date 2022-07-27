@@ -1,7 +1,7 @@
 using Plots
 using Random
 
-f(x) = x^2 + 2*x + 1
+f(x) = x*sin(x)
 
 # trapezoid rule integral calculatior
 function trapIntegral(start,finish,step)
