@@ -1,7 +1,9 @@
 using Plots
 using Random
+e=2.7182818
 
-f(x) = x*sin(x)
+
+f(x) = (65-65*e^(-1000*x))*30*e^(-1000*x)
 
 # trapezoid rule integral calculatior
 function trapIntegral(start,finish,step)
