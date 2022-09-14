@@ -82,3 +82,42 @@ function encrypt(key::Array{Char, 3},text::String)
 
     return(chyphertext)
 end
+
+function backShift(list,num::Int)
+    len = length(list)
+    out = zeros(len)
+    for i in 1:1:len
+        pos = i + num
+
+        if pos > len
+            out[i]=list[pos-len]
+        else
+            out[i]=list[pos]
+        end
+    end
+    return(out)
+end
+
+
+
+function unencrypt(key::Array{Char, 3},cyphertext::String)
+    len = length(cyphertext)
+
+    shifted = posArray(cyphertext,key)
+    shifted[2,:] = backShift(shifted[2,:],1)
+    shifted[3,:] = backShift(shifted[3,:],2)
+
+    text = ""
+
+    for i in 1:1:len
+        pos = shifted[:,i]
+        (x,y,z)=(pos[1],pos[2],pos[3])
+        x = convert(Int,x)
+        y = convert(Int,y)
+        z = convert(Int,z)
+        char = key[x,y,z]
+        text = text * char
+    end
+
+    return(text)
+end
