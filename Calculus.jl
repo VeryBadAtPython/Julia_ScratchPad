@@ -1,9 +1,10 @@
 using Plots
 using Random
 e=2.7182818
+v(t)=(1600*t+1)*e^(-800*t)
+i(t)=50*e^(-800*t)*10^(-3)
 
-
-f(x) = (65-65*e^(-1000*x))*30*e^(-1000*x)
+f(x) = v(x)*i(x)
 
 # trapezoid rule integral calculatior
 function trapIntegral(start,finish,step)
